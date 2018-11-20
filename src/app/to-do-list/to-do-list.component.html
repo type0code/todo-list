@@ -19,12 +19,12 @@
         </ng-container>
 
         <li class="item empty" *ngIf="!allTasks || !allTasks.length">Empty tasks list</li>
-      </ul>
+      </ul><!-- .list -->
 
       <form [formGroup]="newTaskForm" (ngSubmit)="addTask(newTaskForm)" novalidate>
         <app-input formControlName="taskTitle" [suffixIcon]="'sli-note'"></app-input>
       </form>
-    </div>
+    </div><!-- .list-wrap -->
   </div>
 
   <div class="col-12 col-md-6">
@@ -49,13 +49,13 @@
         </li>
 
         <li class="item empty" *ngIf="!todayTasksForm.controls['tasks'].length">No tasks for today</li>
-      </ul>
+      </ul><!-- .list -->
 
       <div class="actions">
         <button app-button [block]="true" [load]="btnLoading" [disabled]="todayTasksForm.invalid || saved">
           Send list
         </button>
       </div>
-    </form>
+    </form><!-- .list-wrap -->
   </div>
 </div>
