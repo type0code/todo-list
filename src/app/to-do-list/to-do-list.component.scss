@@ -3,6 +3,8 @@
 :host {
   border: 1px solid main-palette(100);
   display: block;
+  max-height: 100%;
+  overflow: auto;
   width: 100%;
 
   .col-12 {
