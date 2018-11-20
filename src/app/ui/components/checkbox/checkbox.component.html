@@ -1,0 +1,11 @@
+<div class="app-checkbox-wrap" (click)="switch(value)">
+  <div class="app-checkbox-handle">
+    <input type="checkbox" class="checkbox-input" [value]="value" [attr.checked]="value">
+
+    <span class="check-detector"></span>
+  </div>
+
+  <div class="app-checkbox-label">
+    <ng-content></ng-content>
+  </div>
+</div>

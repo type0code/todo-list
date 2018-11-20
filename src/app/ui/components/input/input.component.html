@@ -1,0 +1,29 @@
+<div class="app-input-wrap" (click)="onFocus(disabled || readonly)">
+  <div
+    class="input-prefix input-icon"
+    *ngIf="prefixIcon"
+  >
+    <span class="{{ prefixIcon }}"></span>
+  </div>
+
+  <div class="input-infix">
+    <input
+      type="{{ type }}"
+      name="{{ name }}"
+      placeholder="{{ placeholder }}"
+      [(ngModel)]="value"
+      class="input-control"
+      [readonly]="readonly ? true : null"
+      [required]="required ? true : null"
+      (focus)="onFocus(disabled || readonly)"
+      (blur)="onBlur(disabled || readonly)"
+    >
+  </div>
+
+  <div
+    class="input-suffix input-icon"
+    *ngIf="suffixIcon"
+  >
+    <span class="{{ suffixIcon }}"></span>
+  </div>
+</div>

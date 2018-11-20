@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-12 col-md-6">
+    <div class="list-wrap">
+      <h4 class="list-title mt-0">All tasks</h4>
+
+      <ul class="list">
+        <ng-container *ngFor="let item of allTasks; let i = index">
+          <li class="item">
+            <app-checkbox
+              [(ngModel)]="item.today"
+              (click)="toggleState(item, allTasks)"
+              [disabled]="!item.today && todayEnough"
+            >
+              {{ item.title }}
+            </app-checkbox>
+
+            <button class="no-style remove sli-trash" (click)="removeTask(allTasks, item.id)"></button>
+          </li>
+        </ng-container>
+
+        <li class="item empty" *ngIf="!allTasks || !allTasks.length">Empty tasks list</li>
+      </ul>
+
+      <form [formGroup]="newTaskForm" (ngSubmit)="addTask(newTaskForm)" novalidate>
+        <app-input formControlName="taskTitle" [suffixIcon]="'sli-note'"></app-input>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="bg-col"></div>
+
+    <form
+      class="list-wrap"
+      [formGroup]="todayTasksForm"
+      (ngSubmit)="sendTasks(todayTasksForm)"
+      *ngIf="todayTasksForm"
+      novalidate
+    >
+      <h4 class="list-title mt-0">Today tasks</h4>
+
+      <ul class="list" formArrayName="tasks">
+        <li class="item" *ngFor="let task of todayTasksForm.controls['tasks'].controls; let i = index" [formGroup]="task">
+          <app-checkbox formControlName="done" (click)="changeDone(task.value)">
+            {{ task.value.title }}
+          </app-checkbox>
+
+          <button type="button" class="no-style remove sli-close" (click)="removeTask(allTasks, task.value.id, false)"></button>
+        </li>
+
+        <li class="item empty" *ngIf="!todayTasksForm.controls['tasks'].length">No tasks for today</li>
+      </ul>
+
+      <div class="actions">
+        <button app-button [block]="true" [load]="btnLoading" [disabled]="todayTasksForm.invalid || saved">
+          Send list
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

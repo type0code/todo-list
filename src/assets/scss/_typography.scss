@@ -1,0 +1,81 @@
+html {
+  font-size: $main-fs;
+  height: 100%;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: $body-bg;
+  color: $body-color;
+  font-family: $main-ff;
+  font-size: 1rem;
+  font-weight: $main-fw;
+  height: 100%;
+  line-height: $main-lh;
+  overflow-x: hidden;
+}
+app {
+  display: block;
+  height: 100%;
+}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  margin-top: $module-rem;
+  margin-bottom: $module-rem * 2;
+}
+h1, .h1 {
+  font-size: 1.8571rem; /* 26px */
+  line-height: 1.54; /* 40px */
+}
+h2, .h2 {
+  font-size: 1.7143rem; /* 24px */
+  line-height: 1.6667; /* 40px */
+}
+h3, .h3 {
+  font-size: 1.5714rem; /* 22px */
+  line-height: 1.82; /* 40px */
+}
+h4, .h4 {
+  font-size: 1.4286rem; /* 20px */
+  line-height: 1; /* 20px */
+}
+h5, .h5 {
+  font-size: 1.2857rem; /* 18px */
+  line-height: 1.12; /* 20px */
+}
+h6, .h6 {
+  font-size: 1.1429rem; /* 16px */
+  line-height: 1.25; /* 20px */
+}
+p, ul, ol, pre, blockquote {
+  margin-top: 0;
+  margin-bottom: $module-rem * 2;
+}
+
+a {
+  color: main-palette(A400);
+  text-decoration: none;
+  transition: color .2s $animation;
+
+  &:hover,
+  &.hover {
+    color: main-palette(A700);
+    text-decoration: none;
+  }
+}
+a,
+a:visited,
+a:focus,
+a:active,
+a:hover {
+  outline: 0 none !important;
+}
+
+button:focus {
+  outline: none !important;
+}
+.no-style {
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0;
+}

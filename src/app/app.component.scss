@@ -1,0 +1,16 @@
+@import '../assets/scss/variables';
+
+:host {
+  display: block;
+  height: 100%;
+  padding: $module-rem * 2;
+
+  .app-container {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+  }
+}

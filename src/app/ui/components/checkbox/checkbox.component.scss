@@ -1,0 +1,152 @@
+@import '../../../../assets/scss/variables';
+
+$_module-rem: $module-rem;
+$_bg: (
+  default: transparent,
+  hover: transparent,
+  active: transparent,
+  disabled: #ccc
+);
+$_border: (
+  default: main-palette(100),
+  hover: main-palette(200),
+  active: main-palette(A400),
+  disabled: #ccc
+);
+$_color: (
+  default: main-palette(100),
+  hover: main-palette(200),
+  active: main-palette(A400),
+  disabled: #8e8e8e
+);
+$_label-color: (
+  default: inherit,
+  hover: inherit,
+  active: inherit,
+  disabled: #ccc
+);
+
+$_border-style: solid;
+$_border-width: 2px;
+$_fs: 1rem;
+$_shape: $shape;
+$_animation: $animation;
+$_height: $_module-rem * 2;
+$_width: $_module-rem * 2;
+
+:host {
+  display: inline-flex;
+  transition: color .2s $_animation;
+
+  .app-checkbox-wrap {
+    align-items: flex-start;
+    cursor: pointer;
+    display: flex;
+
+    .app-checkbox-handle {
+      align-items: center;
+      background: map-get($_bg, default);
+      border: $_border-width $_border-style map-get($_border, default);
+      border-radius: $_shape;
+      color: map-get($_color, default);
+      cursor: inherit;
+      display: flex;
+      height: $_height;
+      justify-content: center;
+      margin: 0;
+      min-width: $_width;
+      padding: 2px;
+      position: relative;
+      transition:
+        background .2s $_animation,
+        border .2s $_animation,
+        color .2s $_animation;
+      width: $_width;
+
+      .checkbox-input {
+        cursor: inherit;
+        opacity: 0;
+        position: absolute;
+      }
+      .check-detector {
+        background: map-get($_color, default);
+        display: block;
+        height: 100%;
+        transform: scale(0);
+        transition:
+          background .2s $_animation,
+          transform .2s $_animation;
+        width: 100%;
+      }
+    }
+    .app-checkbox-label {
+      color: map-get($_label-color, default);
+      margin-left: 10px;
+      transition: color .2s $_animation;
+
+      &:empty {
+        display: none;
+      }
+    }
+    &:hover {
+      .app-checkbox-handle {
+        background: map-get($_bg, hover);
+        border-color: map-get($_border, hover);
+        color: map-get($_color, hover);
+
+        .check-detector {
+          background: map-get($_color, hover);
+          transform: scale(1);
+        }
+      }
+      .app-checkbox-label {
+        color: map-get($_label-color, hover);
+      }
+    }
+  }
+  &.checked {
+    .app-checkbox-wrap {
+      .app-checkbox-handle {
+        background: map-get($_bg, active);
+        border-color: map-get($_border, active);
+        color: map-get($_color, active);
+
+        .check-detector {
+          background: map-get($_color, active);
+          transform: scale(1);
+        }
+      }
+      .app-checkbox-label {
+        color: map-get($_label-color, active);
+      }
+    }
+  }
+  &.disabled {
+    .app-checkbox-wrap {
+      cursor: not-allowed;
+
+      .app-checkbox-handle {
+        background: map-get($_bg, disabled);
+        border-color: map-get($_border, disabled);
+        color: map-get($_color, disabled);
+
+        .check-detector {
+          background: map-get($_color, disabled);
+          transform: scale(0);
+        }
+      }
+      .app-checkbox-label {
+        color: map-get($_label-color, disabled);
+      }
+    }
+    &.checked {
+      .app-checkbox-wrap {
+        .app-checkbox-handle {
+          .check-detector {
+            transform: scale(1);
+          }
+        }
+      }
+    }
+  }
+}

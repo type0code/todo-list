@@ -1,0 +1,77 @@
+$main-palette: (
+  50 : #e6e6e7,
+  100 : #c0c1c3,
+  200 : #96989b,
+  300 : #6c6f72,
+  400 : #4d5054,
+  500 : #2d3136,
+  600 : #282c30,
+  700 : #222529,
+  800 : #1c1f22,
+  900 : #111316,
+  A100 : #5cadff,
+  A200 : #2994ff,
+  A400 : #007af5,
+  A700 : #006edb,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+@function main-palette($key: $main-palette) {
+  @return map-get($main-palette, $key);
+}
+@function main-contrast($key: $main-palette) {
+  @return map-get(map-get($main-palette, contrast), $key);
+}
+
+$success-color: #48c090;
+$success-contrast: #fff;
+$info-color: #51aefb;
+$info-contrast: #fff;
+$warning-color: #fcbf00;
+$warning-contrast: #fff;
+$error-color: #ed5c76;
+$error-contrast: #fff;
+
+$body-bg: rgba(main-palette(500),.05);
+$body-color: #000000;
+$main-ff: 'Open Sans', sans-serif;
+$main-fs: 14px;
+$main-fw: 400;
+$module: 10px;
+$main-lh: 1.43;
+$module-rem: ($module / $main-fs) * 1rem;
+$shape: 0;
+$animation: ease-in-out;
+$box-shadow: 0px 3px 21px 0px rgba(main-palette(500),.2);
+
+//Media
+$max543 : only screen and (max-width: 543px);
+$min544 : only screen and (min-width: 544px);
+$max767 : only screen and (max-width: 767px);
+$min768 : only screen and (min-width: 768px);
+$max991 : only screen and (max-width: 991px);
+$min992 : only screen and (min-width: 992px);
+$max1199 : only screen and (max-width: 1199px);
+$min1200 : only screen and (min-width: 1200px);
+
+//Placeholder
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}

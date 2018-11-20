@@ -1,0 +1,142 @@
+@import '../../../../assets/scss/variables';
+
+$_bg: (
+  default: transparent,
+  hover: transparent,
+  focus: rgba(main-palette(A400),.01),
+  disabled: rgba(#ccc, .1)
+);
+$_border: (
+  default: main-palette(100),
+  hover: main-palette(200),
+  focus: main-palette(A400),
+  disabled: #ccc
+);
+$_color: (
+  default: main-palette(500),
+  hover: main-palette(500),
+  focus: main-palette(500),
+  disabled: #ccc
+);
+
+$_placeholder-color: #a8a8a8;
+$_border-style: solid;
+$_border-width: 1px;
+$_fs: 1rem;
+$_lh: $module-rem * 2 / $_fs;
+$_padding-h: $module-rem * 2;
+$_padding-v: $module-rem;
+$_shape: $shape;
+$_animation: $animation;
+
+@-webkit-keyframes autofill {
+  to {
+    color: #666;
+    background: transparent;
+  }
+}
+input:-webkit-autofill {
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}
+
+:host {
+  border-radius: $_shape;
+  color: map-get($_color, default);
+  display: block;
+  font-size: $_fs;
+  line-height: $_lh;
+  width: 100%;
+
+  .app-input-wrap {
+    align-items: center;
+    border: $_border-width $_border-style map-get($_border, default);
+    border-radius: inherit;
+    cursor: text;
+    display: flex;
+    outline: none;
+    padding: 0 $_padding-h;
+    padding: 0 calc(#{$_padding-h} - .2em);
+    position: relative;
+    transition:
+      background .2s $_animation,
+      border .2s $_animation,
+      color .2s $_animation;
+    width: 100%;
+
+    .input-infix {
+      flex: auto;
+      min-width: 5px;
+    }
+    .input-control {
+      background: none;
+      border: 0;
+      border-radius: inherit;
+      box-shadow: none;
+      color: inherit;
+      cursor: inherit;
+      display: block;
+      font: inherit;
+      margin: -$_border-width 0;
+      outline: none;
+      padding: $_padding-v .2em;
+      width: 100%;
+
+      @include placeholder {
+        color: $_placeholder-color;
+      }
+    }
+    .input-prefix,
+    .input-suffix {
+      color: $_placeholder-color;
+      flex: none;
+      padding: 0 .2em;
+    }
+    .input-icon {
+      font-size: 1.3em;
+    }
+  }
+  &:hover {
+    color: map-get($_color, hover);
+
+    .app-input-wrap {
+      background: map-get($_bg, hover);
+      border-color: map-get($_border, hover);
+    }
+  }
+  &.input-focus {
+    color: map-get($_color, focus);
+
+    .app-input-wrap {
+      background: map-get($_bg, focus);
+      border-color: map-get($_border, focus);
+    }
+  }
+  &.ng-invalid.ng-touched,
+  .has-error & {
+    .app-input-wrap {
+      background-color: rgba($error-color, .1);
+      border: 1px solid $error-color;
+    }
+  }
+  &.input-disabled,
+  &.input-readonly {
+    color: map-get($_color, disabled);
+
+    .app-input-wrap {
+      background-color: map-get($_bg, disabled);
+      border-color:  map-get($_border, disabled);
+      cursor: not-allowed;
+
+      .input-control {
+        pointer-events: none;
+      }
+    }
+  }
+}
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}
+}
