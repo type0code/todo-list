@@ -1,0 +1,58 @@
+{
+  "allTasks": [
+    {
+      "id": 0,
+      "title": "To do something",
+      "done": false,
+      "today": false
+    },
+    {
+      "id": 1,
+      "title": "To do something 2",
+      "done": true,
+      "today": true
+    },
+    {
+      "id": 2,
+      "title": "To do something 3",
+      "done": false,
+      "today": true
+    },
+    {
+      "id": 3,
+      "title": "To do something 4",
+      "done": false,
+      "today": false
+    },
+    {
+      "id": 4,
+      "title": "To do something 5",
+      "done": false,
+      "today": false
+    }
+  ],
+  "todayTasks": {
+    "updated-2018": {
+      "11": {
+        "21 17:17:26 +0200": {
+          "sendTime": "2018/11/21",
+          "data": "2018/11/21 17:17:26 +0200",
+          "tasks": [
+            {
+              "id": 0,
+              "title": "To do something",
+              "done": false,
+              "today": false
+            },
+            {
+              "id": 1,
+              "title": "To do something 2",
+              "done": true,
+              "today": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}

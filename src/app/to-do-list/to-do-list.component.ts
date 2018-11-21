@@ -1,42 +1,9 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 import { IToDo } from './to-do';
-import { formatDate } from '@angular/common';
 import { ToDoListService } from './to-do-list.service';
-
-const ALL_TASKS: IToDo[] = [
-  {
-    id: 0,
-    title: 'To do something',
-    done: false,
-    today: false
-  },
-  {
-    id: 1,
-    title: 'To do something 2',
-    done: true,
-    today: true
-  },
-  {
-    id: 2,
-    title: 'To do something 3',
-    done: false,
-    today: true
-  },
-  {
-    id: 3,
-    title: 'To do something 4',
-    done: false,
-    today: false
-  },
-  {
-    id: 4,
-    title: 'To do something 5',
-    done: false,
-    today: false
-  }
-];
 
 @Component({
   selector: 'to-do-list',
@@ -45,13 +12,12 @@ const ALL_TASKS: IToDo[] = [
 })
 export class ToDoListComponent implements OnInit {
   @HostBinding('class.to-do-list') true;
-  allTasks: IToDo[];
-  todayTasks: IToDo[];
   newTaskForm: FormGroup;
   todayTasksForm: FormGroup;
   todayEnough: boolean;
   btnLoading: boolean;
   saved: boolean;
+  allTasks: IToDo[];
 
   get todayList(): FormArray {
     return this.todayTasksForm.get('tasks') as FormArray;
@@ -61,16 +27,25 @@ export class ToDoListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toDoListSv: ToDoListService
   ) {
-    this.allTasks = ALL_TASKS;
-    this.todayTasks = [];
     this.todayEnough = false;
     this.btnLoading = false;
     this.saved = false;
   }
 
   ngOnInit() {
-    this.initNewTaskForm();
-    this.initTodayTasksForm(this.allTasks);
+    this.toDoListSv.getAllTasks().subscribe(
+      data => {
+        this.allTasks = data;
+
+        this.initNewTaskForm();
+        this.initTodayTasksForm(data);
+      },
+      err => {
+        this.allTasks = [];
+
+        console.log(err);
+      }
+    );
   }
 
   // Init add new task form
@@ -85,13 +60,15 @@ export class ToDoListComponent implements OnInit {
     const ID: number = this.randomId();
 
     if (this.allTasks && this.allTasks.length < 100000 && form.value.taskTitle) {
-      this.allTasks.push({
+      const NEW_TASK: IToDo = {
         id: ID,
         title: form.value.taskTitle,
         today: false,
         done: false
-      });
+      };
 
+      this.toDoListSv.addTask(NEW_TASK);
+      this.allTasks.push(NEW_TASK);
       this.newTaskForm.reset();
     }
   }
@@ -103,10 +80,12 @@ export class ToDoListComponent implements OnInit {
         task.today ? this.todayEnough = false : null;
 
         if (allList) {
+          this.toDoListSv.removeTask(task.key);
           tasks.splice(index, 1)
         } else {
           task.today = false;
           task.done = false;
+          this.toDoListSv.updateTask(task.key, task);
         }
       }
     });
@@ -127,6 +106,7 @@ export class ToDoListComponent implements OnInit {
       this.removeTodayTask(item.id);
     }
 
+    this.toDoListSv.updateTask(item.key, item);
     this.todayEnough = (todayCount < 5) ? false : true;
   }
 
@@ -156,6 +136,7 @@ export class ToDoListComponent implements OnInit {
   initTodayTask(task: IToDo) {
     return new FormGroup({
       id: new FormControl(task.id),
+      key: new FormControl(task.key),
       title: new FormControl(task.title),
       today: new FormControl(task.today),
       done: new FormControl(task.done)
@@ -167,41 +148,18 @@ export class ToDoListComponent implements OnInit {
     if (form.valid) {
       this.btnLoading = true;
 
-      this.toDoListSv.sendDayTasks(form.value).subscribe(
-        () => {
-          console.log('Form sent');
+      this.toDoListSv.sendDayTasks(form.value);
+      this.saved = true;
 
-          this.saved = true;
-
-          setTimeout(() => {
-            this.btnLoading = false;
-          }, 500);
-        },
-        err => {
-          console.log(err);
-
-          setTimeout(() => {
-            this.btnLoading = false;
-          }, 500);
-        }
-      );
+      setTimeout(() => {
+        this.btnLoading = false;
+      }, 500);
     }
   }
 
   // Send changed task
   changeDone(task: IToDo) {
-    this.toDoListSv.doneTask(task).subscribe(
-      () => {
-        console.log('Changes was save');
-      },
-      err => {
-        console.log(err);
-
-        setTimeout(() => {
-          this.btnLoading = false;
-        }, 500);
-      }
-    );
+    this.toDoListSv.updateTask(task.key, task);
   }
 
   // Add today task

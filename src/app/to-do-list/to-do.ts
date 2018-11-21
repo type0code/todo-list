@@ -3,6 +3,7 @@ export interface IToDo {
   title: string;
   today: boolean;
   done?: boolean;
+  key?: string;
 }
 
 export interface IDayTasks {

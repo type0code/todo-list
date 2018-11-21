@@ -1,12 +1,15 @@
 @import '../../assets/scss/variables';
 
 :host {
-  border: 1px solid main-palette(100);
   display: block;
   max-height: 100%;
   overflow: auto;
+  position: relative;
   width: 100%;
 
+  .to-do-wrap {
+    border: 1px solid main-palette(100);
+  }
   .col-12 {
     &:first-child {
       border-right: 1px solid main-palette(100);

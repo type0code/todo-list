@@ -1,35 +1,48 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
-import { throwError as observableThrowError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+
 import { IDayTasks, IToDo } from './to-do';
+import { map } from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDoListService {
-  constructor(private http: HttpClient) {}
+  tasksRef: AngularFireList<any>;
+  todayTasksRef: AngularFireList<any>;
 
+  constructor(private db: AngularFireDatabase) {
+    this.tasksRef = db.list('allTasks');
+    this.todayTasksRef = db.list('todayTasks');
+  }
+
+  // get all tasks
+  getAllTasks() {
+    return this.tasksRef.snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      )
+    );
+  }
+
+  // add new task
+  addTask(task: IToDo) {
+    this.tasksRef.push(task);
+  }
+
+  // Remove task
+  removeTask(key: string) {
+    this.tasksRef.remove(key);
+  }
+
+  // Update task
+  updateTask(key: string, data: IToDo) {
+    this.tasksRef.update(key, data);
+  }
+
+  // set today tasks
   sendDayTasks(data: IDayTasks) {
-    const URL: string = '';
-
-    return this.http.post(URL, data).pipe(
-      tap((res: any) => { return res }),
-      catchError(this.handleError)
-    );
-  }
-
-  doneTask(task: IToDo) {
-    const URL: string = '';
-
-    return this.http.post(URL, task).pipe(
-      tap((res: any) => { return res }),
-      catchError(this.handleError)
-    );
-  }
-
-  private handleError(error: any) {
-    return observableThrowError(error.error || 'Server error');
+    this.todayTasksRef.set(`updated-${data.sendTime}`, data);
   }
 }
